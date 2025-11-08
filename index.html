@@ -1,30 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Simulateur d'Évolution - De l'Atome à la Civilisation</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>Snake Game</h1>
-        <div class="score-board">
-            <div class="score">Score: <span id="score">0</span></div>
-            <div class="high-score">High Score: <span id="highScore">0</span></div>
-        </div>
-        <canvas id="gameCanvas"></canvas>
-        <div class="controls">
-            <p>Use Arrow Keys to move</p>
-            <p>Press SPACE to pause/resume</p>
-            <button id="restartBtn">Restart Game</button>
-        </div>
-        <div id="gameOver" class="game-over hidden">
-            <h2>Game Over!</h2>
-            <p>Your Score: <span id="finalScore">0</span></p>
-            <button id="playAgainBtn">Play Again</button>
-        </div>
+    <!-- Conteneur principal -->
+    <div id="app">
+        <!-- En-tête avec titre et timeline -->
+        <header id="header">
+            <h1>Simulateur d'Évolution Automatique</h1>
+            <div id="timeline">
+                <div id="era-indicator">Ère 1: Particules & Atomes</div>
+                <div id="time-display">Temps: 0 ans</div>
+            </div>
+        </header>
+
+        <!-- Zone principale avec carte et panneau latéral -->
+        <main id="main-container">
+            <!-- Panneau de statistiques (gauche) -->
+            <aside id="stats-panel">
+                <h2>Statistiques</h2>
+                <div id="stats-content">
+                    <div class="stat-item">
+                        <span class="stat-label">Ère actuelle:</span>
+                        <span class="stat-value" id="stat-era">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Population totale:</span>
+                        <span class="stat-value" id="stat-population">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Civilisations:</span>
+                        <span class="stat-value" id="stat-civilizations">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Niveau techno moyen:</span>
+                        <span class="stat-value" id="stat-tech">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Guerres en cours:</span>
+                        <span class="stat-value" id="stat-wars">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Tribus actives:</span>
+                        <span class="stat-value" id="stat-tribes">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Villes:</span>
+                        <span class="stat-value" id="stat-cities">0</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Zone de simulation centrale (canvas) -->
+            <div id="simulation-container">
+                <canvas id="simulation-canvas"></canvas>
+            </div>
+
+            <!-- Panneau d'événements (droite) -->
+            <aside id="events-panel">
+                <h2>Événements récents</h2>
+                <div id="events-log"></div>
+            </aside>
+        </main>
+
+        <!-- Contrôles en bas -->
+        <footer id="controls">
+            <div id="playback-controls">
+                <button id="btn-pause" class="control-btn">⏸️ Pause</button>
+                <button id="btn-speed-1" class="control-btn speed-btn active">x1</button>
+                <button id="btn-speed-2" class="control-btn speed-btn">x2</button>
+                <button id="btn-speed-4" class="control-btn speed-btn">x4</button>
+            </div>
+            <div id="simulation-info">
+                <span id="fps-counter">FPS: 60</span>
+            </div>
+        </footer>
     </div>
-    <script src="game.js"></script>
+
+    <!-- Chargement des scripts dans l'ordre -->
+    <script src="js/simulation/entities.js"></script>
+    <script src="js/simulation/events.js"></script>
+    <script src="js/simulation/core.js"></script>
+    <script src="js/render/renderer.js"></script>
+    <script src="js/ui/ui.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
