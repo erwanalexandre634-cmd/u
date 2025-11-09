@@ -1,3 +1,4 @@
+/* Reset et styles de base */
 * {
     margin: 0;
     padding: 0;
@@ -5,110 +6,257 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    color: #e0e0e0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Conteneur principal */
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* En-tête */
+#header {
+    background: rgba(20, 25, 45, 0.9);
+    padding: 15px 30px;
+    border-bottom: 2px solid #3a4d8f;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#header h1 {
+    font-size: 24px;
+    color: #6fb3ff;
+    margin-bottom: 10px;
+}
+
+#timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+#era-indicator {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid #ffd700;
+}
+
+#time-display {
+    font-size: 16px;
+    color: #b0c4de;
+}
+
+/* Conteneur principal (stats + simulation + events) */
+#main-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    gap: 10px;
+    padding: 10px;
+}
+
+/* Panneau de statistiques (gauche) */
+#stats-panel {
+    width: 250px;
+    background: rgba(20, 25, 45, 0.8);
+    border: 1px solid #3a4d8f;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+#stats-panel h2 {
+    font-size: 18px;
+    color: #6fb3ff;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3a4d8f;
+    padding-bottom: 8px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.stat-label {
+    color: #b0c4de;
+    font-size: 14px;
+}
+
+.stat-value {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Zone de simulation (centre) */
+#simulation-container {
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    color: #fff;
+    background: rgba(10, 15, 30, 0.9);
+    border: 2px solid #3a4d8f;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-.game-container {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-h1 {
-    margin-bottom: 20px;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.score-board {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.score, .high-score {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 10px 20px;
-    border-radius: 10px;
-}
-
-#gameCanvas {
-    background: #1a1a2e;
-    border: 3px solid #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+#simulation-canvas {
     display: block;
-    margin: 0 auto;
+    background: #050a15;
+    border-radius: 4px;
 }
 
-.controls {
-    margin-top: 20px;
+/* Panneau d'événements (droite) */
+#events-panel {
+    width: 300px;
+    background: rgba(20, 25, 45, 0.8);
+    border: 1px solid #3a4d8f;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
-.controls p {
-    margin: 10px 0;
-    font-size: 0.9em;
-    opacity: 0.9;
+#events-panel h2 {
+    font-size: 18px;
+    color: #6fb3ff;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3a4d8f;
+    padding-bottom: 8px;
 }
 
-button {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: 25px;
+#events-log {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.event-entry {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid #6fb3ff;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.4;
+    animation: slideIn 0.3s ease-out;
+}
+
+.event-entry.war {
+    border-left-color: #ff4444;
+}
+
+.event-entry.birth {
+    border-left-color: #44ff44;
+}
+
+.event-entry.evolution {
+    border-left-color: #ffd700;
+}
+
+.event-entry.disaster {
+    border-left-color: #ff8800;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.event-time {
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+
+.event-text {
+    color: #e0e0e0;
+}
+
+/* Contrôles en bas */
+#controls {
+    background: rgba(20, 25, 45, 0.9);
+    padding: 15px 30px;
+    border-top: 2px solid #3a4d8f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#playback-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    background: rgba(58, 77, 143, 0.6);
+    color: #e0e0e0;
+    border: 1px solid #6fb3ff;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
-button:hover {
+.control-btn:hover {
+    background: rgba(111, 179, 255, 0.3);
+    border-color: #ffd700;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-button:active {
+.control-btn:active {
     transform: translateY(0);
 }
 
-.game-over {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+.control-btn.active {
+    background: #3a4d8f;
+    border-color: #ffd700;
+    color: #ffd700;
 }
 
-.game-over h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #f5576c;
+#simulation-info {
+    color: #888;
+    font-size: 12px;
 }
 
-.game-over p {
-    font-size: 1.5em;
-    margin-bottom: 20px;
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.hidden {
-    display: none;
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(111, 179, 255, 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(111, 179, 255, 0.8);
 }
