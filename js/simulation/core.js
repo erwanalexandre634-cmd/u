@@ -136,8 +136,16 @@ class SimulationCore {
         // Suppression des particules sans énergie
         this.entities.particles = this.entities.particles.filter(p => p.energy > 0);
 
-        // Formation d'atomes (probabilité)
-        if (Math.random() < 0.05 && this.entities.particles.length > 2) {
+        // Régénération de particules (pour maintenir le système actif)
+        if (this.entities.particles.length < 50 && Math.random() < 0.3) {
+            this.entities.particles.push(new Particle(
+                Math.random() * this.width,
+                Math.random() * this.height
+            ));
+        }
+
+        // Formation d'atomes (probabilité augmentée)
+        if (Math.random() < 0.4 && this.entities.particles.length >= 2) {
             const p1 = this.entities.particles[0];
             const p2 = this.entities.particles[1];
 
@@ -154,8 +162,8 @@ class SimulationCore {
             this.entities.particles.splice(0, 2);
         }
 
-        // Formation de molécules simples
-        if (this.entities.atoms.length > 10 && Math.random() < 0.01) {
+        // Formation de molécules simples (probabilité augmentée)
+        if (this.entities.atoms.length >= 2 && Math.random() < 0.2) {
             const a1 = this.entities.atoms[0];
             const a2 = this.entities.atoms[1];
 
@@ -168,10 +176,10 @@ class SimulationCore {
 
     /**
      * Condition de passage à l'ère 2
-     * Au moins 50 molécules formées
+     * Au moins 20 molécules formées (réduit pour faciliter la progression)
      */
     checkEra1ToEra2() {
-        return this.entities.molecules.length >= 50;
+        return this.entities.molecules.length >= 20;
     }
 
     // ========== ÈRE 2 : CHIMIE → VIE ==========
@@ -192,8 +200,17 @@ class SimulationCore {
         // Suppression des molécules sans énergie
         this.entities.molecules = this.entities.molecules.filter(m => m.energy > 0);
 
-        // Complexification des molécules
-        if (Math.random() < 0.02 && this.entities.molecules.length > 10) {
+        // Régénération de molécules simples (pour maintenir la vie)
+        if (this.entities.molecules.length < 30 && Math.random() < 0.2) {
+            this.entities.molecules.push(new Molecule(
+                Math.random() * this.width,
+                Math.random() * this.height,
+                1 + Math.floor(Math.random() * 3)
+            ));
+        }
+
+        // Complexification des molécules (probabilité augmentée)
+        if (Math.random() < 0.15 && this.entities.molecules.length > 5) {
             const m1 = this.entities.molecules[Math.floor(Math.random() * this.entities.molecules.length)];
             const newComplexity = Math.min(m1.complexity + 1, 10);
 
@@ -201,9 +218,9 @@ class SimulationCore {
             this.entities.molecules.push(complexMolecule);
         }
 
-        // Apparition de cellules (molécules auto-réplicantes)
+        // Apparition de cellules (probabilité augmentée)
         const replicatingMolecules = this.entities.molecules.filter(m => m.canReplicate);
-        if (replicatingMolecules.length > 0 && Math.random() < 0.01) {
+        if (replicatingMolecules.length > 0 && Math.random() < 0.1) {
             const m = replicatingMolecules[0];
             const cell = new Cell(m.x, m.y);
             this.entities.cells.push(cell);
@@ -226,7 +243,7 @@ class SimulationCore {
     }
 
     checkEra2ToEra3() {
-        return this.entities.cells.length >= 100;
+        return this.entities.cells.length >= 30; // Réduit pour faciliter la progression
     }
 
     // ========== ÈRE 3 : ORGANISMES COMPLEXES ==========
@@ -261,22 +278,23 @@ class SimulationCore {
         // Suppression des organismes morts
         this.entities.organisms = this.entities.organisms.filter(o => o.alive);
 
-        // Reproduction / évolution
-        if (Math.random() < 0.05 && this.entities.organisms.length < 100) {
+        // Reproduction / évolution (probabilité augmentée)
+        if (Math.random() < 0.2 && this.entities.organisms.length < 100) {
             const parent = this.entities.organisms[Math.floor(Math.random() * this.entities.organisms.length)];
             if (parent) {
                 const child = new Organism(parent.x + (Math.random() - 0.5) * 20, parent.y + (Math.random() - 0.5) * 20);
-                child.intelligence = parent.intelligence + (Math.random() - 0.5);
-                child.strength = parent.strength + (Math.random() - 0.5);
-                child.sociability = parent.sociability + (Math.random() - 0.5);
+                // Mutations plus importantes et tendance vers l'augmentation
+                child.intelligence = Math.max(0, parent.intelligence + (Math.random() - 0.3) * 2);
+                child.strength = Math.max(0, parent.strength + (Math.random() - 0.3) * 2);
+                child.sociability = Math.max(0, parent.sociability + (Math.random() - 0.3) * 2);
                 this.entities.organisms.push(child);
             }
         }
 
-        // Mutations aléatoires
-        if (Math.random() < 0.01) {
+        // Mutations aléatoires (plus fréquentes)
+        if (Math.random() < 0.05) {
             this.entities.organisms.forEach(o => {
-                if (Math.random() < 0.1) {
+                if (Math.random() < 0.3) {
                     o.evolve();
                 }
             });
@@ -284,11 +302,11 @@ class SimulationCore {
     }
 
     checkEra3ToEra4() {
-        // Quand certains organismes deviennent très intelligents et sociables
+        // Quand certains organismes deviennent intelligents et sociables (seuils réduits)
         const smartSocialOrganisms = this.entities.organisms.filter(
-            o => o.intelligence > 7 && o.sociability > 7
+            o => o.intelligence > 6 && o.sociability > 6
         );
-        return smartSocialOrganisms.length >= 10;
+        return smartSocialOrganisms.length >= 5; // Réduit de 10 à 5
     }
 
     // ========== ÈRE 4 : TRIBUS HUMAINES ==========
@@ -451,11 +469,11 @@ class SimulationCore {
     }
 
     checkEra5ToEra6() {
-        // Passage à l'ère moderne quand tech moyenne > 30
+        // Passage à l'ère moderne quand tech moyenne > 20 (réduit)
         if (this.entities.civilizations.length === 0) return false;
 
         const avgTech = this.entities.civilizations.reduce((sum, c) => sum + c.technology, 0) / this.entities.civilizations.length;
-        return avgTech > 30;
+        return avgTech > 20;
     }
 
     // ========== ÈRE 6 : MODERNE / FUTUR ==========

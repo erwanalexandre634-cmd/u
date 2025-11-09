@@ -15,14 +15,14 @@ class Particle {
         this.y = y;
         this.vx = (Math.random() - 0.5) * 2;
         this.vy = (Math.random() - 0.5) * 2;
-        this.energy = Math.random() * 100;
+        this.energy = 100 + Math.random() * 200; // Plus d'énergie initiale
         this.type = 'particle';
     }
 
     update() {
         this.x += this.vx;
         this.y += this.vy;
-        this.energy -= 0.01;
+        this.energy -= 0.005; // Perte d'énergie réduite
     }
 }
 
@@ -48,13 +48,13 @@ class Molecule {
         this.x = x;
         this.y = y;
         this.complexity = complexity; // 1-10
-        this.energy = complexity * 50;
+        this.energy = complexity * 100; // Plus d'énergie
         this.type = 'molecule';
         this.canReplicate = complexity > 5;
     }
 
     update() {
-        this.energy -= 0.1;
+        this.energy -= 0.02; // Perte réduite
     }
 }
 
@@ -206,8 +206,8 @@ class Tribe {
         this.food += Math.random() * 2; // Collecte de nourriture
         this.food -= this.members.length * 0.1; // Consommation
 
-        // Natalité
-        if (this.food > 50 && this.members.length < 100 && Math.random() < 0.01) {
+        // Natalité (probabilité augmentée)
+        if (this.food > 30 && this.members.length < 100 && Math.random() < 0.05) {
             this.members.push(new Human(
                 this.x + (Math.random() - 0.5) * 20,
                 this.y + (Math.random() - 0.5) * 20,
@@ -228,7 +228,7 @@ class Tribe {
     }
 
     canBecomeVillage() {
-        return this.getPopulation() > 30 && this.stability > 60 && this.age > 100;
+        return this.getPopulation() > 20 && this.stability > 40 && this.age > 50; // Conditions réduites
     }
 }
 
@@ -263,9 +263,9 @@ class City {
             this.population += Math.random() * this.population * 0.001;
         }
 
-        // Progression technologique
-        if (Math.random() < 0.001) {
-            this.technology += 0.1;
+        // Progression technologique (probabilité et gain augmentés)
+        if (Math.random() < 0.01) {
+            this.technology += 0.3;
         }
 
         // Développement militaire
@@ -284,7 +284,7 @@ class City {
     }
 
     canBecomeCivilization() {
-        return this.population > 1000 && this.technology > 5 && this.age > 500;
+        return this.population > 500 && this.technology > 3 && this.age > 200; // Conditions réduites
     }
 
     getMilitaryPower() {
@@ -336,9 +336,9 @@ class Civilization {
         this.technology = avgTech;
         this.territory = this.cities.length * 100;
 
-        // Progression technologique civilisationnelle
-        if (Math.random() < 0.002 * this.cities.length) {
-            this.technology += 0.5;
+        // Progression technologique civilisationnelle (probabilité augmentée)
+        if (Math.random() < 0.01 * this.cities.length) {
+            this.technology += 0.8;
             this.cities.forEach(c => c.technology = this.technology);
         }
     }
